@@ -84,48 +84,26 @@ class WebRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(f" book: {book}".encode("utf-8"))
 
 
-    def get_recomendation(self,session_id, book_id):
-        books=r.lrange(f"session:{session_id}",0,-1)
-        print(session_id, books)
-
-        books_read = {book.decode('utf-8').split(':')[1] for book in books}
-
-        all_books = {'1','2','3','4','5'}
-
-        books_to_recommend = all_books-books_read
-        if len(books_read)>=3:
-            if books_to_recommend:
-                return f"Te recomendamos leer el libro : {books_to_recommend.pop()}"
-            else: 
-                return "Ya has leido todos los libros"
-        else:
-            return "Lee el menos tres libros para obtener recomendaciones"
-
-
-    def get_by_search(self):
-        if self.query_data and 'q' in self.query_data:
-            # Buscar libros que coincidan con la consulta
-            booksInter = r.sinter(self.query_data['q'].split(' '))
-            lista = []
-        
-            # Decodificar los resultados y agregarlos a la lista
-            for b in booksInter:
-                y = b.decode()
-                lista.append(y)
-        
-            # Si no se encontraron libros, redirigir a get_index
-            if not lista:
-                self.index()
-            else:
-                # Si se encontraron libros, procesar cada uno
-                for book in lista:
-                    self.get_book(book)
-
-        # Configurar la respuesta HTTP para indicar éxito
+    def recomendar_libro(self):
         self.send_response(200)
-        self.send_header('Content-type', 'text/html')
+        self.send_header("Content-Type", "text/html")
         self.end_headers()
+        recommended_book = r.lindex("libros", 0)
+        if recommended_book:
+            self.wfile.write(f"<p>Recomendacion: {recommended_book.decode('utf-8')}</p>".encode("utf-8"))
+        else:
+            self.wfile.write(b"<p>No hay libros para recomendar</p>")
 
+    
+
+    def search_book(self, query):
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html")
+        self.end_headers()
+        book_list = r.lrange("libros", 0, -1)
+        for book in book_list:
+            if query.lower() in book.decode("utf-8").lower():
+                self.wfile.write(f"<p>{book.decode('utf-8')}</p>".encode("utf-8"))
 
 
     def index(self):
