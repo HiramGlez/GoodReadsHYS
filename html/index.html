@@ -1,58 +1,146 @@
 <!DOCTYPE html>
 <html lang="es-mx">
-    <head>
-        <title>Books</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
-        <style>
-<<<<<<< HEAD
-        /* Estilos adicionales */
-            article {
-                max-width: 600px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #f4f4f4;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-            h1 {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            h2 {
-                font-size: 24px;
-                margin-bottom: 5px;
-            }
-            p {
-                margin-bottom: 10px;
-            }
-    </style>
-        
-=======
-            
-        </style>
-
-    </head>
-    <body>
-    <h1>La Biblioteca</h1>       
+<head>
+    <title>La Biblioteca</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
     
+    <style>
+        /* Estilos adicionales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
 
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
 
+        article {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
+        h1, h2 {
+            text-align: center;
+        }
 
-    <article>
-            <h2><a href="\books\book1.html"> C# avanzado </a></h2>
-            <p> Pedro López, Juan Ruiz </p>
-            <br> 
-            <h2><a href="\books\book2.html"> El nuevo sistema operativo MS-DOS</a></h2>
-            <p> Joe Medina </p>
-            <br> 
-            <h2><a href="\books\book3.html"> La Metamorfosis </a></h2>
-            <p> Patrick Alvarado </p>
-            <br> 
-            <h2><a href="\books\book4.html"> La Danza de Hielo y Fuego </a></h2>
-            <p> R.R. González </p>
-    </article>
-    </body>
+        h1 {
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            
+            display: inline;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        p {
+            margin-bottom: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #800000;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        /* Estilo para las imágenes */
+        .book-image {
+            display: block;
+            margin: 0 auto;
+            max-width: 200px; /* Ajusta el tamaño según tus necesidades */
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo para la línea separadora */
+        .separator-line {
+            width: 100%;
+            border: 1px solid #ccc;
+            margin: 20px 0;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>La Biblioteca</h1>
+
+</header>
+
+<article>
+    
+    <div>
+        <img class="book-image" src = "https://m.media-amazon.com/images/I/41rUpuKsp4L.jpg" alt="La vida secreta de la mente">
+        <h2><a href="\books\book1.html">La vida secreta de la mente</a></h2>
+        <p>Autor: Pedro López, Juan Ruiz</p>
+    </div>
+    <hr class="separator-line">
+
+    <div>
+        <img class="book-image" src="https://m.media-amazon.com/images/I/71L6WTyO9LL._AC_UF1000,1000_QL80_.jpg" alt="La vida secreta de la mente">
+        <h2><a href="\books\book2.html">Más allá de la niebla</a></h2>
+        <p>Autor: Joe Medina</p>
+    </div>
+    <hr class="separator-line">
+
+    <div>
+        <img class="book-image" src="images/book1.jpg" alt="La vida secreta de la mente">
+        <h2><a href="\books\book3.html">La chica del tren</a></h2>
+        <p>Autor: Patrick Alvarado</p>
+    </div>
+    <hr class="separator-line">
+
+    <div>
+        <img class="book-image" src="images/book1.jpg" alt="La vida secreta de la mente">
+        <h2><a href="\books\book4.html">El libro negro del programador</a></h2>
+        <p>Autor: R.R. González</p>
+    </div>
+    <hr class="separator-line">
+
+    <div>
+        <img class="book-image" src="images/book1.jpg" alt="La vida secreta de la mente">
+        <h2><a href="\books\book5.html">La cabaña</a></h2>
+        <p>Autor: R.R. González</p>
+    </div>
+    <hr class="separator-line">
+
+    <div>
+        <img class="book-image" src="images/book1.jpg" alt="La vida secreta de la mente">
+        <h2><a href="\books\book6.html">El código del héroe</a></h2>
+        <p>Autor: R.R. González</p>
+    </div>
+    <hr class="separator-line">
+
+</article>
+</body>
+
 </html>
+
