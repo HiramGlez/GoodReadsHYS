@@ -4,11 +4,14 @@ import redis
 from http.cookies import SimpleCookie
 import uuid
 from urllib.parse import parse_qsl, urlparse
+import json
+import random
 
 mappings = {(r"^/books/(?P<book_id>\d+)$", "get_books"),
             (r"^/books/(?P<book_id>\d+)$", "get_books"),
             (r"^/$", "index"),
-            (r"^/search", "search")}
+            (r"^/buscar$", "buscarLibro")
+            (r"^/recomendar$", "recomendarLibro")}
 
 r = redis.StrictRedis(host="localhost", port=6379, db=0)
 
@@ -50,6 +53,46 @@ class WebRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.url_mapping_response()
 
+        if self.path.startswith('/buscarLibro'):
+            query = self.path.split('=')[1] 
+            book_info = self.buscar_libro(query)
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write(book_info.encode())
+
+        elif self.path.startswith('/recomendarLibro'):
+            book_info = self.recomendar_libro()
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write(book_info.encode())
+
+        else:
+            self.send_error(404, 'File not found')
+
+            if self.path == '/recomendarLibro':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+
+            # Lista de libros disponibles
+            libros = [
+                {"id": 1, "nombre": "La vida secreta de la mente"},
+                {"id": 2, "nombre": "Más allá de la niebla"}
+                {"id": 3, "nombre": "La chica del tren"}
+                {"id": 4, "nombre": "El libro negro del programador"}
+                {"id": 5, "nombre": "La cabaña"}
+                {"id": 6, "nombre": "El código del héroe"}
+            ]
+
+            
+            libro_recomendado = random.choice(libros)
+
+            
+            response_data = json.dumps({"bookName": libro_recomendado["nombre"], "bookId": libro_recomendado["id"]})
+            self.wfile.write(response_data.encode())
+
     def url_mapping_response(self):
         for pattern, method in mappings:
             match = self.get_params(pattern, self.path)
@@ -59,7 +102,7 @@ class WebRequestHandler(BaseHTTPRequestHandler):
                 return
 
         self.send_response(404)
-        # self.send_header("Content-Type", "text/html")
+        self.send_header("Content-Type", "text/html")
         self.end_headers()
         error = f"<h1> Not found </h1>".encode("utf-8")
         self.wfile.write(error)
@@ -84,26 +127,54 @@ class WebRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(f" book: {book}".encode("utf-8"))
 
 
-    def recomendar_libro(self):
+    def buscarLibro(self, query):
         self.send_response(200)
         self.send_header("Content-Type", "text/html")
         self.end_headers()
-        recommended_book = r.lindex("libros", 0)
-        if recommended_book:
-            self.wfile.write(f"<p>Recomendacion: {recommended_book.decode('utf-8')}</p>".encode("utf-8"))
-        else:
-            self.wfile.write(b"<p>No hay libros para recomendar</p>")
 
+        
+        if query == "La vida secreta de la mente":
+            book_info = """
+            <h2>La vida secreta de la mente</h2>
+            <p>Mariano Sigman</p>
+            <p>La vida secreta de la mente es un viaje especular que recorre el cerebro y el pensamiento: se trata de descubrir nuestra mente para entendernos hasta en los más pequeños rincones que componen lo que somos, cómo forjamos las ideas en los primeros días de vida, cómo damos forma a las decisiones que nos constituyen, cómo soñamos y cómo imaginamos, por qué sentimos ciertas emociones hacia los demás, cómo los demás influyen en nosotros, y cómo el cerebro se transforma y, con él, lo que somos.</p>
+            <div class="book-container">
+                <img class="book-image" src="https://m.media-amazon.com/images/I/41rUpuKsp4L.jpg" alt="La vida secreta de la mente">
+            </div>
+            """
+        else:
+            book_info = "<h1>No se encontró el libro</h1>"
+
+        self.wfile.write(book_info.encode("utf-8"))
     
 
-    def search_book(self, query):
+    def recomendarLibro(self):
         self.send_response(200)
         self.send_header("Content-Type", "text/html")
         self.end_headers()
-        book_list = r.lrange("libros", 0, -1)
-        for book in book_list:
-            if query.lower() in book.decode("utf-8").lower():
-                self.wfile.write(f"<p>{book.decode('utf-8')}</p>".encode("utf-8"))
+
+         
+        book_info = """
+        <h2>La vida secreta de la mente</h2>
+        <p>Mariano Sigman</p>
+        <p>La vida secreta de la mente es un viaje especular que recorre el cerebro y el pensamiento: se trata de descubrir nuestra mente para entendernos hasta en los más pequeños rincones que componen lo que somos, cómo forjamos las ideas en los primeros días de vida, cómo damos forma a las decisiones que nos constituyen, cómo soñamos y cómo imaginamos, por qué sentimos ciertas emociones hacia los demás, cómo los demás influyen en nosotros, y cómo el cerebro se transforma y, con él, lo que somos.</p>
+        <div class="book-container">
+            <img class="book-image" src="https://m.media-amazon.com/images/I/41rUpuKsp4L.jpg" alt="La vida secreta de la mente">
+        </div>
+        """
+        
+        self.wfile.write(book_info.encode("utf-8"))
+
+
+        def get_query_param(self, param_name):
+        query_params = self.path.split('?')[1]
+        params = query_params.split('&')
+        for param in params:
+            name, value = param.split('=')
+            if name == param_name:
+                return value
+        return None
+        
 
 
     def index(self):
