@@ -5,19 +5,181 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/style.css" rel="stylesheet">
+
+        <style>
+        /* Estilos adicionales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 0;
+            color: #333;
+        }
+
+        p {
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .book-container {
+            text-align: center;
+        }
+
+        .book-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        /* Estilos para el formulario y los resultados de búsqueda y recomendación */
+        form {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"], button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover, button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultadoBusqueda, #recomendacion {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+        }
+
+    </style>
+
+        
     </head>
     <body>
-    <h1>La Biblioteca</h1>       
-    
+    <header>
+        <h1><a href="/index.html">La Biblioteca</a></h1>
+    </header>
+
     <main>
-           <h2> El nuevo sistema operativo MS-DOS</h2>
-           <p> Joe Medina </p>
+           <h2> Más allá de la niebla </h2>
+           <p> Ray Ortiz </p>
            <p>
-                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam consequat quis dui eu aliquam. Mauris sed dolor purus. Etiam eu sodales diam, id condimentum justo. Curabitur in massa ultricies, gravida sapien nec, consectetur sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer eu nulla vel nisl efficitur aliquet. Morbi blandit a diam convallis malesuada. Phasellus quis pulvinar erat. Etiam sit amet metus tortor. Maecenas nec enim lobortis diam vulputate hendrerit eget et urna. Proin ut odio nibh.
+                 Proporciona un despertar tanto para el cuerpo como para el alma. La vida, en el mejor de los días, está llena de altibajos emocionales. La forma en que manejamos cada uno de ellos, tiene un impacto global sobre nuestro destino. A menudo nos preguntamos, por qué estamos experimentando sucesos desagradables en nuestra vida. Estas alteraciones entran en nuestro mundo cuando menos las esperamos, y a menudo dejan tras de sí un gran desorden emocional.
             </p>
-            <p>
-                Maecenas posuere turpis sed neque ultrices vestibulum. Nam accumsan nunc eget massa vehicula cursus. Donec mollis urna elit, vitae gravida risus tincidunt vitae. Sed a iaculis dolor. Nulla tempus feugiat quam non pellentesque. In sodales, metus ac viverra varius, dui est pulvinar dui, ac sollicitudin nibh dui sit amet felis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis fermentum est et ligula vehicula suscipit. Suspendisse auctor feugiat auctor. Vestibulum nec diam at massa euismod congue id sit amet velit. Suspendisse potenti. Nullam velit orci, tincidunt sed varius sollicitudin, elementum eu nulla. Morbi purus neque, dapibus a dignissim a, accumsan in dui. Integer sed aliquam erat. Maecenas rhoncus tortor urna, non rutrum urna faucibus a. Aenean sed lorem id enim aliquam porta nec ac nisi. 
-            </p>
+
+            <div class="book-container">
+            <img class="book-image"  src="https://m.media-amazon.com/images/I/71L6WTyO9LL._AC_UF1000,1000_QL80_.jpg" alt="Más allá de la niebla">           
+            </div>
+
+
+            <!-- Formulario para buscar un libro -->
+        <form id="buscarLibroForm">
+            <label for="query">Buscar libro:</label>
+            <input type="text" id="query" name="query">
+            <input type="submit" value="Buscar">
+        </form>
+        
+        <!-- Resultados de la búsqueda -->
+        <div id="resultadoBusqueda"></div>
+
+        <!-- Botón para recomendar un libro -->
+        <button onclick="recomendarLibro()">Recomendar Libro</button>
+        
+        <!-- Recomendación del libro -->
+        <div id="recomendacion"></div>
+           
     </main>
-    </body>
+
+    <script>
+        
+        // Función para buscar un libro
+    document.getElementById("buscarLibroForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario por defecto
+        
+        const query = document.getElementById("query").value; // Obtener el valor del campo de búsqueda
+        buscarLibro(query); // Llamar a la función para buscar el libro
+    });
+    
+    function buscarLibro(query) {
+        fetch(`/buscar?query=${query}`) // Realizar solicitud GET al servidor con la consulta
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("resultadoBusqueda").innerHTML = data; // Mostrar resultados de la búsqueda
+            })
+            .catch(error => console.error('Error al buscar el libro:', error));
+    }
+
+    // Función para recomendar un libro
+    function recomendarLibro() {
+        fetch('/recomendar') // Realizar solicitud GET al servidor para recomendar el libro
+            .then(response => response.json())
+            .then(data => {
+                const { bookName, bookId } = data; // Obtener nombre e ID del libro recomendado
+                
+                // Mostrar el nombre del libro recomendado con un hipervínculo a la página del libro
+                const link = document.createElement('a');
+                link.href = `/book${bookId}.html`; // Ruta de la página del libro
+                link.textContent = bookName; // Nombre del libro
+                document.getElementById('recomendacion').appendChild(link);
+
+                // Agregar una imagen con una breve descripción del libro
+                const imagen = document.createElement('img');
+                imagen.src = `/images/book${bookId}.jpg`; // Ruta de la imagen del libro
+                imagen.alt = 'Descripción breve del libro'; // Descripción breve del libro
+                document.getElementById('recomendacion').appendChild(imagen);
+            })
+            .catch(error => {
+                console.error('Error al recomendar el libro:', error);
+                document.getElementById('recomendacion').textContent = 'Lo sentimos, no se pudo recomendar un libro en este momento.';
+            });
+    }
+        
+</script>
+
+
+</body>
 </html>

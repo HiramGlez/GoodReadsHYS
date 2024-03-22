@@ -1,66 +1,186 @@
 <!DOCTYPE html>
 <html lang="es-mx">
-    <head>
-        <title>Proyecto 01</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
-    </head>
-    <body>
-           <h1><a href="/index.html">La Biblioteca</a></h1>
-    
-    <main>
-            <h2> La vida secreta de la mente</h2>
-            <p> Mariano Sigman </p>
-            <p>
-                 La vida secreta de la mente es un viaje especular que recorre el cerebro y el pensamiento: se trata de descubrir nuestra mente para entendernos hasta en los más pequeños rincones que componen lo que somos, cómo forjamos las ideas en los primeros días de vida, cómo damos forma a las decisiones que nos constituyen, cómo soñamos y cómo imaginamos, por qué sentimos ciertas emociones hacia los demás, cómo los demás influyen en nosotros, y cómo el cerebro se transforma y, con él, lo quesomos.
-            </p>
-            
+<head>
+    <title>Proyecto 01</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        /* Estilos adicionales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
 
-            <button onclick = "recomendarLibro()">Recomendar Libro</button>
-    </main>
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
 
-    <script>
-        // Función para buscar un libro
-        document.getElementById("buscarLibroForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevenir el envío del formulario por defecto
-            
-            const query = document.getElementById("query").value; // Obtener el valor del campo de búsqueda
-            buscarLibro(query); // Llamar a la función para buscar el libro
-        });
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 0;
+            color: #333;
+        }
+
+        p {
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .book-container {
+            text-align: center;
+        }
+
+        .book-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
         
-        function buscarLibro(query) {
-            fetch(`/buscar_libro?query=${query}`) // Realizar solicitud GET al servidor con la consulta
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("resultadoBusqueda").innerHTML = data; // Mostrar resultados de la búsqueda
-                })
-                .catch(error => console.error('Error al buscar el libro:', error));
+        form {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
         }
 
-        // Función para recomendar un libro
-        function recomendarLibro() {
-            fetch('/recomendar_libro') // Realizar solicitud GET al servidor para recomendar el libro
-                .then(response => response.text())
-                .then(data => {
-                    // Mostrar el nombre del libro recomendado con un hipervínculo a la página del libro
-                    const link = document.createElement('a');
-                    link.href = '/libro'; // Ruta de la página del libro
-                    link.textContent = data; // Nombre del libro
-                    document.getElementById('recomendacion').appendChild(link);
-
-                    // Agregar una imagen con una breve descripción del libro
-                    const imagen = document.createElement('img');
-                    imagen.src = 'ruta_a_la_imagen'; // Ruta de la imagen del libro
-                    imagen.alt = 'Descripción breve del libro'; // Descripción breve del libro
-                    document.getElementById('recomendacion').appendChild(imagen);
-                })
-                .catch(error => {
-                    console.error('Error al recomendar el libro:', error);
-                    document.getElementById('recomendacion').textContent = 'Lo sentimos, no se pudo recomendar un libro en este momento.';
-                });
+        label {
+            margin-right: 10px;
         }
-    </script>
 
-    </body>
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"], button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover, button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultadoBusqueda, #recomendacion {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+        }
+
+        a {
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <h1><a href="/index.html">La Biblioteca</a></h1>
+</header>
+
+<main>
+    <h2>La vida secreta de la mente</h2>
+    <p>Mariano Sigman</p>
+    <p>La vida secreta de la mente es un viaje especular que recorre el cerebro y el pensamiento: se trata de descubrir nuestra mente para entendernos hasta en los más pequeños rincones que componen lo que somos, cómo forjamos las ideas en los primeros días de vida, cómo damos forma a las decisiones que nos constituyen, cómo soñamos y cómo imaginamos, por qué sentimos ciertas emociones hacia los demás, cómo los demás influyen en nosotros, y cómo el cerebro se transforma y, con él, lo que somos.</p>
+    
+    <div class="book-container">
+        <img class="book-image" src="https://m.media-amazon.com/images/I/41rUpuKsp4L.jpg" alt="La vida secreta de la mente">
+    </div>
+
+            <form id="buscarLibroForm">
+            <label for="query">Buscar libro:</label>
+            <input type="text" id="query" name="query">
+            <input type="submit" value="Buscar">
+        </form>
+        
+        
+        <div id="resultadoBusqueda"></div>
+
+        
+        <button onclick="recomendarLibro()">Recomendar Libro</button>
+        
+        
+        <div id="recomendacion"></div>
+
+</main>
+
+        <script>
+    // Función para buscar un libro
+    document.getElementById('buscarLibroForm').addEventListener('submit', function(event) {
+        event.preventDefault(); 
+
+        const query = document.getElementById('query').value; 
+
+        fetch(`/buscarLibro?query=${query}`)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('resultadoBusqueda').innerHTML = data; 
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    function recomendarLibro() {
+    fetch('/recomendarLibro')
+        .then(response => response.json())  // Parsear la respuesta como JSON
+        .then(data => {
+            const { bookName, bookId } = data;  // Obtener nombre e ID del libro recomendado
+            
+            // Limpiar el contenedor de recomendación
+            document.getElementById('recomendacion').innerHTML = '';
+
+            
+            const link = document.createElement('a');
+            link.href = `/book${bookId}.html`;  // Ruta de la página del libro
+            link.textContent = bookName;  // Nombre del libro
+            document.getElementById('recomendacion').appendChild(link);
+
+            
+            const imagen = document.createElement('img');
+            imagen.src = `/images/book${bookId}.jpg`;  // Ruta de la imagen del libro
+            imagen.alt = 'Descripción breve del libro';  // Descripción breve del libro
+            document.getElementById('recomendacion').appendChild(imagen);
+        })
+        .catch(error => {
+            console.error('Error al recomendar el libro:', error);
+            document.getElementById('recomendacion').textContent = 'Lo sentimos, no se pudo recomendar un libro en este momento.';
+        });
+}
+</script>
+
+</body>
 </html>
+
